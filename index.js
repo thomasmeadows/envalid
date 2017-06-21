@@ -81,17 +81,18 @@ function cleanEnv(inputEnv, specs = {}, options = {}) {
 
     for (const k of varKeys) {
         const spec = specs[k]
-        const devDefault = (env.NODE_ENV === 'production' ? undefined : spec.devDefault)
+        const usingDevDefault = (env.NODE_ENV !== 'production') && ('devDefault' in spec)
+        const devDefault = usingDevDefault ? spec.devDefault : undefined
         let rawValue = env[k]
 
         if (rawValue === undefined) {
             rawValue = (devDefault === undefined ? spec.default : devDefault)
         }
 
-        // Default values can be anything falsy (besides undefined), without
+        // Default values can be anything falsy (including an explicitly set undefined), without
         // triggering validation errors:
-        const usingFalsyDefault = ((spec.default !== undefined) && (spec.default === rawValue)) ||
-                                  ((devDefault !== undefined) && (devDefault === rawValue))
+        const usingFalsyDefault = (('default' in spec) && (spec.default === rawValue)) ||
+                                  (usingDevDefault && (devDefault === rawValue))
 
         try {
             if (rawValue === undefined && !usingFalsyDefault) {
