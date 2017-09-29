@@ -2,6 +2,8 @@
 
 # Envalid
 
+THIS IS A FORK OF ENVALID FOR OLDER VERSIONS OF NODE. SEE https://www.npmjs.com/package/envalid FOR OFFICIAL CURRENT VERSION
+
 Envalid is a small library for validating and accessing environment variables in
 Node.js (v6.0 or later) programs, aiming to:
 
@@ -45,7 +47,7 @@ const env = envalid.cleanEnv(process.env, {
 })
 
 
-// Read an environment variable, which is validated and cleaned during 
+// Read an environment variable, which is validated and cleaned during
 // and/or filtering that you specified with cleanEnv().
 env.ADMIN_EMAIL     // -> 'admin@example.com'
 
