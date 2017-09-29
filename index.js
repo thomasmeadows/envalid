@@ -31,7 +31,7 @@ function validateVar({ spec = {}, name, rawValue }) {
     if (spec.choices) {
         if (!Array.isArray(spec.choices)) {
             throw new TypeError(`"choices" must be an array (in spec for "${name}")`)
-        } else if (!spec.choices.includes(value)) {
+        } else if (!~spec.choices.indexOf(value)) {
             throw new EnvError(`Value "${value}" not in choices [${spec.choices}]`)
         }
     }
@@ -76,7 +76,7 @@ function cleanEnv(inputEnv, specs = {}, options = {}) {
     const varKeys = Object.keys(specs)
 
     // If validation for NODE_ENV isn't specified, use the default validation:
-    if (!varKeys.includes('NODE_ENV')) {
+    if (!~varKeys.indexOf('NODE_ENV')) {
         defaultNodeEnv = validateVar({
             name: 'NODE_ENV',
             spec: str({ choices: ['development', 'test', 'production'] }),
